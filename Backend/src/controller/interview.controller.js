@@ -87,6 +87,7 @@ async function downloadResumePdfController(req, res) {
         });
         res.send(pdfBuffer);
     } catch (error) {
+        console.error("downloadResumePdf failed:", error);
         res.status(500).json({ message: "Failed to generate resume PDF", error: error.message });
     }
 }
