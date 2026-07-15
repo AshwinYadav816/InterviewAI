@@ -5,9 +5,16 @@ const cors = require('cors');
 const app = express();
 app.use(express.json());
 app.use(cookieParser());
+// Allow the local dev frontend plus the deployed frontend (set FRONTEND_URL on
+// the backend host, e.g. https://interview-ai-ten-nu.vercel.app).
+const allowedOrigins = [
+    'http://localhost:5173',
+    process.env.FRONTEND_URL,
+].filter(Boolean);
+
 app.use(cors({
-    origin: 'http://localhost:5173',
-    credentials: true 
+    origin: allowedOrigins,
+    credentials: true
 }));
 
 // require all routes here
