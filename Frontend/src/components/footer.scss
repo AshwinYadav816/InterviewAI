@@ -1,0 +1,114 @@
+// ── Branded app footer ───────────────────────────────────────────────
+.app-footer {
+    position: relative;
+    margin-top: 52px;
+    padding: 34px 6px 22px;
+
+    // glowing gradient hairline across the top
+    &__glow {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background: linear-gradient(90deg,
+            transparent,
+            #6c8cff 25%,
+            #e1034d 50%,
+            #8b5cf6 75%,
+            transparent);
+        opacity: 0.85;
+    }
+
+    &__main {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 20px;
+        flex-wrap: wrap;
+    }
+
+    &__brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.55rem;
+        font-size: 1.25rem;
+        font-weight: 700;
+        letter-spacing: 0.3px;
+    }
+
+    &__spark {
+        display: inline-block;
+        font-size: 1.35rem;
+        background: linear-gradient(135deg, #6c8cff, #e1034d);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        animation: footer-spark 3.5s ease-in-out infinite;
+    }
+
+    &__brand-text {
+        background: linear-gradient(90deg, #6c8cff, #8b5cf6);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    &__tagline {
+        margin-top: 9px;
+        color: #9aa4b2;
+        font-size: 0.92rem;
+        max-width: 24rem;
+        line-height: 1.5;
+    }
+
+    &__badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.45rem 0.9rem;
+        border: 1px solid #2c333f;
+        border-radius: 999px;
+        background: #1a1f27;
+        color: #e6e9ef;
+        font-size: 0.82rem;
+        font-weight: 500;
+        white-space: nowrap;
+    }
+
+    &__badge-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: #22c55e;
+        box-shadow: 0 0 8px #22c55e;
+        animation: footer-pulse 1.8s ease-in-out infinite;
+    }
+
+    &__bottom {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 26px;
+        padding-top: 16px;
+        border-top: 1px solid rgba(44, 51, 63, 0.5);
+        color: #6b7280;
+        font-size: 0.82rem;
+    }
+
+    &__heart {
+        color: #ff2d78;
+    }
+}
+
+@keyframes footer-pulse {
+    0%, 100% { opacity: 1; }
+    50%      { opacity: 0.35; }
+}
+
+@keyframes footer-spark {
+    0%, 100% { transform: rotate(0deg) scale(1); }
+    50%      { transform: rotate(180deg) scale(1.18); }
+}
