@@ -32,4 +32,11 @@ interviewRouter.get("/:id", middlewares.authenticateToken, interviewController.g
  */
 interviewRouter.get("/:id/resume", middlewares.authenticateToken, interviewController.downloadResumePdfController);
 
+/**
+ * @route   PATCH /api/interview/:id/tasks
+ * @desc    Save which roadmap tasks the user has completed
+ * @access  Private
+ */
+interviewRouter.patch("/:id/tasks", middlewares.authenticateToken, interviewController.updateCompletedTasksController);
+
 module.exports = interviewRouter;

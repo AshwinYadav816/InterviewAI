@@ -107,9 +107,35 @@ async function getAllInterviewReportsController(req, res) {
 }
 
 
+async function updateCompletedTasksController(req, res) {
+    try {
+        const { completedTasks } = req.body;
+
+        if (!Array.isArray(completedTasks)) {
+            return res.status(400).json({ message: "completedTasks must be an array" });
+        }
+
+        const interviewReport = await interviewReportModel.findOneAndUpdate(
+            { _id: req.params.id, user: req.user.id },
+            { completedTasks },
+            { new: true }
+        );
+
+        if (!interviewReport) {
+            return res.status(404).json({ message: "Interview report not found" });
+        }
+
+        res.status(200).json({ message: "Progress saved", completedTasks: interviewReport.completedTasks });
+    } catch (error) {
+        res.status(500).json({ message: "Failed to save progress", error: error.message });
+    }
+}
+
+
 module.exports = {
     getInterviewReportController,
     getAllInterviewReportsController,
     getInterviewReportByIdController,
-    downloadResumePdfController
+    downloadResumePdfController,
+    updateCompletedTasksController
 };

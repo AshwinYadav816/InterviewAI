@@ -55,3 +55,13 @@ export async function generateResumePdf({ interviewReportId }) {
         throw error;
     }
 }
+
+export async function updateCompletedTasks(interviewReportId, completedTasks) {
+    try {
+        const response = await api.patch(`/${interviewReportId}/tasks`, { completedTasks });
+        return response.data;
+    } catch (error) {
+        console.error("Error saving roadmap progress:", error);
+        throw error;
+    }
+}

@@ -40,19 +40,31 @@ const QuestionCard = ({ item, index }) => {
     )
 }
 
-const RoadMapDay = ({ day }) => (
+const RoadMapDay = ({ day, completed, onToggle }) => (
     <div className='roadmap-day'>
         <div className='roadmap-day__header'>
             <span className='roadmap-day__badge'>Day {day.day}</span>
             <h3 className='roadmap-day__focus'>{day.focus}</h3>
         </div>
         <ul className='roadmap-day__tasks'>
-            {day.tasks.map((task, i) => (
-                <li key={i}>
-                    <span className='roadmap-day__bullet' />
-                    {task}
-                </li>
-            ))}
+            {day.tasks.map((task, i) => {
+                const taskId = `${day.day}-${i}`
+                const done = completed.has(taskId)
+                return (
+                    <li
+                        key={i}
+                        className={`roadmap-task ${done ? 'roadmap-task--done' : ''}`}
+                        onClick={() => onToggle(taskId)}
+                    >
+                        <span className={`roadmap-task__check ${done ? 'roadmap-task__check--done' : ''}`}>
+                            {done && (
+                                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>
+                            )}
+                        </span>
+                        <span className='roadmap-task__text'>{task}</span>
+                    </li>
+                )
+            })}
         </ul>
     </div>
 )
@@ -61,10 +73,28 @@ const RoadMapDay = ({ day }) => (
 const Interview = () => {
     const [ activeNav, setActiveNav ] = useState('technical')
     const [ downloading, setDownloading ] = useState(false)
-    const { report, loading, getResumePdf } = useInterview()
+    const [ completed, setCompleted ] = useState(new Set())
+    const [ loadedReportId, setLoadedReportId ] = useState(null)
+    const { report, loading, getResumePdf, saveCompletedTasks } = useInterview()
     const { interviewId } = useParams()
 
     // The report is fetched by useInterview's own effect (keyed on the :interviewId route param).
+
+    // Load the saved checklist when a (different) report loads — survives reload /
+    // re-login because completedTasks comes from the database. (React's recommended
+    // "adjust state during render" pattern, no effect needed.)
+    if (report && report._id !== loadedReportId) {
+        setLoadedReportId(report._id)
+        setCompleted(new Set(report.completedTasks || []))
+    }
+
+    const toggleTask = (taskId) => {
+        const next = new Set(completed)
+        if (next.has(taskId)) next.delete(taskId)
+        else next.add(taskId)
+        setCompleted(next)
+        saveCompletedTasks(interviewId, [ ...next ])   // persist to the backend
+    }
 
     const handleDownload = async () => {
         setDownloading(true)
@@ -102,6 +132,8 @@ const Interview = () => {
     const scoreColor =
         report.matchScore >= 80 ? 'score--high' :
             report.matchScore >= 60 ? 'score--mid' : 'score--low'
+
+    const totalTasks = report.preparationPlan.reduce((sum, d) => sum + d.tasks.length, 0)
 
 
     return (
@@ -177,11 +209,11 @@ const Interview = () => {
                         <section>
                             <div className='content-header'>
                                 <h2>Preparation Road Map</h2>
-                                <span className='content-header__count'>{report.preparationPlan.length}-day plan</span>
+                                <span className='content-header__count'>{completed.size} / {totalTasks} tasks done</span>
                             </div>
                             <div className='roadmap-list'>
                                 {report.preparationPlan.map((day) => (
-                                    <RoadMapDay key={day.day} day={day} />
+                                    <RoadMapDay key={day.day} day={day} completed={completed} onToggle={toggleTask} />
                                 ))}
                             </div>
                         </section>

@@ -96,10 +96,19 @@ const interviewReportSchema = {
 
 async function generateInterviewReport({ resume, selfDescription, jobDescription }) {
 
-    const prompt = `Generate an interview report for a candidate with the following details:
+    const prompt = `Generate a thorough interview report for a candidate with the following details:
                         Resume: ${resume}
                         Self Description: ${selfDescription}
                         Job Description: ${jobDescription}
+
+                        Requirements for the report:
+                        - Generate AT LEAST 10 technical questions (aim for 10-15) covering a wide range of topics
+                          relevant to the job description, from fundamentals to advanced/scenario-based questions.
+                        - Generate AT LEAST 8 behavioral questions (aim for 8-12) covering teamwork, conflict,
+                          leadership, failure/learning, and situational judgment.
+                        - For every question, include the interviewer's intention and a detailed model answer.
+                        - Cover a diverse set of topics; do not repeat similar questions.
+                        - Make the preparation plan span enough days to realistically cover the material.
 `
 
     const response = await generateContentWithRetry({

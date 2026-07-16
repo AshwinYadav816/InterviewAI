@@ -84,6 +84,11 @@ const interviewReportSchema = new mongoose.Schema({
     behavioralQuestions: [ behavioralQuestionSchema ],
     skillGaps: [ skillGapSchema ],
     preparationPlan: [ preparationPlanSchema ],
+    // IDs (e.g. "1-0" = day 1, task index 0) of roadmap tasks the user has ticked off.
+    completedTasks: {
+        type: [ String ],
+        default: []
+    },
     user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "users"
