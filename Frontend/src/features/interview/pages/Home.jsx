@@ -6,12 +6,15 @@ import Loader from '../../../components/Loader'
 import LogoutButton from '../../../components/LogoutButton'
 import Footer from '../../../components/Footer'
 
+const DURATIONS = [ '7 Days', '1 Month', '6 Months' ]
+
 const Home = () => {
 
     const { loading, generateReport,reports } = useInterview()
     const [ jobDescription, setJobDescription ] = useState("")
     const [ selfDescription, setSelfDescription ] = useState("")
     const [ resumeName, setResumeName ] = useState("")
+    const [ planDuration, setPlanDuration ] = useState('7 Days')
     const resumeInputRef = useRef()
 
     const navigate = useNavigate()
@@ -25,7 +28,7 @@ const Home = () => {
         }
 
         try {
-            const data = await generateReport({ jobDescription, selfDescription, resumeFile })
+            const data = await generateReport({ jobDescription, selfDescription, resumeFile, planDuration })
             if (data?._id) {
                 navigate(`/interview/${data._id}`)
             }
@@ -138,7 +141,21 @@ const Home = () => {
 
                 {/* Card Footer */}
                 <div className='interview-card__footer'>
-                    <span className='footer-info'>AI-Powered Strategy Generation &bull; Approx 30s</span>
+                    <div className='timeline-select'>
+                        <span className='timeline-select__label'>Prep timeline</span>
+                        <div className='timeline-select__options'>
+                            {DURATIONS.map(d => (
+                                <button
+                                    key={d}
+                                    type='button'
+                                    className={`timeline-select__option ${planDuration === d ? 'timeline-select__option--active' : ''}`}
+                                    onClick={() => setPlanDuration(d)}
+                                >
+                                    {d}
+                                </button>
+                            ))}
+                        </div>
+                    </div>
                     <button
                         onClick={handleGenerateReport}
                         className='generate-btn'>

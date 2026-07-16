@@ -40,10 +40,10 @@ const QuestionCard = ({ item, index }) => {
     )
 }
 
-const RoadMapDay = ({ day, completed, onToggle }) => (
+const RoadMapDay = ({ day, completed, onToggle, stepLabel }) => (
     <div className='roadmap-day'>
         <div className='roadmap-day__header'>
-            <span className='roadmap-day__badge'>Day {day.day}</span>
+            <span className='roadmap-day__badge'>{stepLabel} {day.day}</span>
             <h3 className='roadmap-day__focus'>{day.focus}</h3>
         </div>
         <ul className='roadmap-day__tasks'>
@@ -134,6 +134,7 @@ const Interview = () => {
             report.matchScore >= 60 ? 'score--mid' : 'score--low'
 
     const totalTasks = report.preparationPlan.reduce((sum, d) => sum + d.tasks.length, 0)
+    const stepLabel = (report.planDuration || '7 Days') === '7 Days' ? 'Day' : 'Phase'
 
 
     return (
@@ -209,11 +210,11 @@ const Interview = () => {
                         <section>
                             <div className='content-header'>
                                 <h2>Preparation Road Map</h2>
-                                <span className='content-header__count'>{completed.size} / {totalTasks} tasks done</span>
+                                <span className='content-header__count'>{report.planDuration || '7 Days'} &bull; {completed.size} / {totalTasks} done</span>
                             </div>
                             <div className='roadmap-list'>
                                 {report.preparationPlan.map((day) => (
-                                    <RoadMapDay key={day.day} day={day} completed={completed} onToggle={toggleTask} />
+                                    <RoadMapDay key={day.day} day={day} completed={completed} onToggle={toggleTask} stepLabel={stepLabel} />
                                 ))}
                             </div>
                         </section>

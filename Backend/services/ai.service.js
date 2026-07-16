@@ -94,7 +94,7 @@ const interviewReportSchema = {
     propertyOrdering: ["title", "matchScore", "technicalQuestions", "behavioralQuestions", "skillGaps", "preparationPlan"]
 }
 
-async function generateInterviewReport({ resume, selfDescription, jobDescription }) {
+async function generateInterviewReport({ resume, selfDescription, jobDescription, planDuration = "7 Days" }) {
 
     const prompt = `Generate a thorough interview report for a candidate with the following details:
                         Resume: ${resume}
@@ -108,7 +108,12 @@ async function generateInterviewReport({ resume, selfDescription, jobDescription
                           leadership, failure/learning, and situational judgment.
                         - For every question, include the interviewer's intention and a detailed model answer.
                         - Cover a diverse set of topics; do not repeat similar questions.
-                        - Make the preparation plan span enough days to realistically cover the material.
+                        - The candidate wants a "${planDuration}" preparation plan. Design the preparationPlan to
+                          span exactly this timeframe using sequential steps (the "day" field is the step number
+                          starting at 1). Choose sensible granularity: a 7-day plan uses ~7 daily steps; a 1-month
+                          plan uses ~4-6 weekly phases; a 6-month plan uses ~6 monthly phases. In each step's
+                          "focus", clearly state the time period it covers (e.g. "Week 1", "Month 2") and the theme,
+                          with concrete tasks for that period.
 `
 
     const response = await generateContentWithRetry({

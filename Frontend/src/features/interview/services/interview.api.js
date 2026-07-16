@@ -8,11 +8,12 @@ const api = axios.create({
     withCredentials: true,
 });
 
-export async function generateInterviewReport({ jobDescription, selfDescription, resumeFile }) {
+export async function generateInterviewReport({ jobDescription, selfDescription, resumeFile, planDuration }) {
     try {
         const formData = new FormData();
         formData.append("jobDescription", jobDescription);
         formData.append("selfDescription", selfDescription);
+        formData.append("planDuration", planDuration || "7 Days");
         if (resumeFile) {
             formData.append("resume", resumeFile);
         }

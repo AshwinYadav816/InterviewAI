@@ -105,6 +105,55 @@ $danger: #ef4444;
     font-size: 0.85rem;
 }
 
+// ── Prep timeline selector ───────────────────────────────────────────
+.timeline-select {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    &__label {
+        color: $muted;
+        font-size: 0.85rem;
+        font-weight: 500;
+        white-space: nowrap;
+    }
+
+    &__options {
+        display: inline-flex;
+        background: $bg;
+        border: 1px solid $border;
+        border-radius: 10px;
+        padding: 3px;
+        gap: 2px;
+    }
+
+    &__option {
+        border: none;
+        background: transparent;
+        color: $muted;
+        font-size: 0.85rem;
+        font-weight: 600;
+        padding: 6px 12px;
+        border-radius: 7px;
+        cursor: pointer;
+        white-space: nowrap;
+        transition: all 0.15s ease;
+
+        &:hover {
+            color: $text;
+        }
+
+        &--active {
+            background: linear-gradient(90deg, $accent, $accent-2);
+            color: #fff;
+        }
+    }
+
+    @media (max-width: 620px) {
+        justify-content: space-between;
+    }
+}
+
 // ── Panels ───────────────────────────────────────────────────────────
 .panel {
     flex: 1;

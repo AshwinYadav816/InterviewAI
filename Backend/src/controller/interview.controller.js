@@ -4,7 +4,7 @@ const interviewReportModel = require('../models/interviewReport.model');
 
 async function getInterviewReportController(req, res) {
     try {
-        const { selfDescription, jobDescription } = req.body;
+        const { selfDescription, jobDescription, planDuration } = req.body;
 
         // A resume file is optional — if one was uploaded, read its text; otherwise
         // we fall back to the self-description the user typed.
@@ -22,7 +22,8 @@ async function getInterviewReportController(req, res) {
         const interviewReportByAi = await generateInterviewReport({
             resume: resumeText,
             selfDescription,
-            jobDescription
+            jobDescription,
+            planDuration
         });
 
         const interviewReport = await interviewReportModel.create({
@@ -30,6 +31,7 @@ async function getInterviewReportController(req, res) {
             resume: resumeText,
             selfDescription,
             jobDescription,
+            planDuration: planDuration || "7 Days",
             title: interviewReportByAi.title,
             matchScore: interviewReportByAi.matchScore,
             technicalQuestions: interviewReportByAi.technicalQuestions,

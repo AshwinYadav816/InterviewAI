@@ -84,6 +84,11 @@ const interviewReportSchema = new mongoose.Schema({
     behavioralQuestions: [ behavioralQuestionSchema ],
     skillGaps: [ skillGapSchema ],
     preparationPlan: [ preparationPlanSchema ],
+    // The timeframe the user chose for the prep roadmap, e.g. "7 Days" / "1 Month" / "6 Months".
+    planDuration: {
+        type: String,
+        default: "7 Days"
+    },
     // IDs (e.g. "1-0" = day 1, task index 0) of roadmap tasks the user has ticked off.
     completedTasks: {
         type: [ String ],
