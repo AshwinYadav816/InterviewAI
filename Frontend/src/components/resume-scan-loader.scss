@@ -1,0 +1,178 @@
+// ── Resume-generation scanning overlay ───────────────────────────────
+.resume-scan {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(9, 12, 17, 0.82);
+    backdrop-filter: blur(4px);
+    padding: 1.5rem;
+    animation: resume-scan-fade 0.2s ease;
+
+    &__card {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 0.4rem;
+        padding: 2rem 2.4rem 1.8rem;
+        border-radius: 1rem;
+        background: #141821;
+        border: 1px solid #2c333f;
+        box-shadow: 0 24px 70px rgba(0, 0, 0, 0.5);
+    }
+
+    &__scene {
+        position: relative;
+        width: 240px;
+        height: 130px;
+        margin-bottom: 0.9rem;
+    }
+
+    &__title {
+        font-size: 1.1rem;
+        font-weight: 600;
+        background: linear-gradient(90deg, #6c8cff, #e1034d, #8b5cf6, #6c8cff);
+        background-size: 200% auto;
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        animation: resume-scan-shimmer 2.6s linear infinite;
+    }
+
+    &__dots span {
+        animation: resume-scan-blink 1.4s infinite both;
+
+        &:nth-child(2) { animation-delay: 0.2s; }
+        &:nth-child(3) { animation-delay: 0.4s; }
+    }
+
+    &__sub {
+        font-size: 0.88rem;
+        color: #9aa4b2;
+        max-width: 21rem;
+        line-height: 1.5;
+    }
+}
+
+.doc {
+    position: absolute;
+    top: 50%;
+    background: #e9eef7;
+    border-radius: 6px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 11px 9px;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+
+    &__corner {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 13px;
+        height: 13px;
+        background: #cdd8ea;
+        border-bottom-left-radius: 4px;
+    }
+
+    &__line {
+        height: 4px;
+        border-radius: 2px;
+        background: #b9c6de;
+
+        &--short { width: 55%; }
+    }
+
+    &--side {
+        width: 54px;
+        height: 72px;
+        transform: translateY(-50%);
+        opacity: 0.55;
+    }
+
+    &--left { left: 4px; }
+    &--right { right: 4px; }
+
+    &--center {
+        left: 50%;
+        width: 76px;
+        height: 98px;
+        transform: translate(-50%, -50%);
+        z-index: 2;
+        overflow: hidden;
+
+        .doc__line { width: 100%; }
+        .doc__line--short { width: 55%; }
+    }
+
+    // light bar sweeping down the centre document
+    &__scan {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: -14px;
+        height: 14px;
+        background: linear-gradient(to bottom,
+            rgba(108, 140, 255, 0),
+            rgba(108, 140, 255, 0.5),
+            rgba(108, 140, 255, 0));
+        animation: doc-scan 2.2s ease-in-out infinite;
+    }
+}
+
+.magnifier {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 60px;
+    height: 60px;
+    z-index: 3;
+    animation: magnifier-hover 2.8s ease-in-out infinite;
+
+    &__lens {
+        position: absolute;
+        inset: 0;
+        border-radius: 50%;
+        border: 5px solid rgba(150, 170, 220, 0.95);
+        background: rgba(180, 200, 245, 0.14);
+    }
+
+    &__handle {
+        position: absolute;
+        bottom: -3px;
+        right: -3px;
+        width: 20px;
+        height: 6px;
+        border-radius: 3px;
+        background: rgba(150, 170, 220, 0.95);
+        transform: rotate(45deg);
+        transform-origin: left center;
+    }
+}
+
+@keyframes magnifier-hover {
+    0%, 100% { transform: translate(-50%, -50%) translate(-10px, -5px); }
+    50%      { transform: translate(-50%, -50%) translate(10px, 5px); }
+}
+
+@keyframes doc-scan {
+    0%   { top: -14px; }
+    100% { top: 100%; }
+}
+
+@keyframes resume-scan-shimmer {
+    to { background-position: 200% center; }
+}
+
+@keyframes resume-scan-blink {
+    0%, 100% { opacity: 0.2; }
+    50%      { opacity: 1; }
+}
+
+@keyframes resume-scan-fade {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}

@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { useInterview } from '../hook/useInterview.js'
 import { useParams, Link } from 'react-router'
 import Loader from '../../../components/Loader'
+import ResumeScanLoader from '../../../components/ResumeScanLoader'
 
 
 
@@ -139,6 +140,7 @@ const Interview = () => {
 
     return (
         <div className='interview-page'>
+            {downloading && <ResumeScanLoader />}
             <div className='interview-layout'>
 
                 {/* ── Left Nav ── */}
